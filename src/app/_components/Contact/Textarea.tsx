@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { TextareaProps } from '@/types';
+import { TextareaProps } from '../../_types';
 
 export const Textarea: React.FC<TextareaProps> = ({ onChange, className = '', rows = 8, ...props }) => {
   return (

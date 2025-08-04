@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { API_BASE_URL } from '@/constants';
-import { Post, PostResponse } from '@/types';
+import { Post, PostResponse } from '../../_types';
 
 const Detail: React.FC = () => {
   const params = useParams();

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { InputProps } from '@/types';
+import { InputProps } from '../../_types';
 
 export const Input: React.FC<InputProps> = ({ onChange, className = '', ...props }) => {
   return (

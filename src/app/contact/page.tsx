@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Label } from '@/components/Contact/Label';
-import { FormGroup } from '@/components/Contact/FormGroup';
-import { Input } from '@/components/Contact/Input';
-import { Textarea } from '@/components/Contact/Textarea';
-import { ErrorMessage } from '@/components/Contact/ErrorMessage';
+import { Label } from '../_components/Contact/Label';
+import { FormGroup } from '../_components/Contact/FormGroup';
+import { Input } from '../_components/Contact/Input';
+import { Textarea } from '../_components/Contact/Textarea';
+import { ErrorMessage } from '../_components/Contact/ErrorMessage';
 import { API_BASE_URL } from '@/constants';
-import { ContactFormData } from '@/types';
+import { ContactFormData } from '../_types';
 
 const Contact: React.FC = () => {
   const [name, setName] = useState<string>('');

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { API_BASE_URL } from '@/constants';
-import { Post, PostsResponse } from '@/types';
+import { Post, PostsResponse } from './_types';
 
 const Home: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
