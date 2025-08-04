@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { LabelProps } from '../../_types';
+import { LabelProps } from '../_types/components';
 
 export const Label: React.FC<LabelProps> = ({ text, className = '', ...props }) => {
   return (

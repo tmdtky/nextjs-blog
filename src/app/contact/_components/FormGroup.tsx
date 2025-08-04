@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { FormGroupProps } from '../../_types';
+import { FormGroupProps } from '../_types/components';
 
 export const FormGroup: React.FC<FormGroupProps> = ({ children, className = '', ...props }) => {
   return (
