@@ -1,18 +1,19 @@
-import React from 'react';
-import { Header } from './_components/Header';
-import './globals.css';
+import type { Metadata } from 'next'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: 'ブログ',
+  description: 'Next.js + microCMS ブログ',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="ja">
-      <body>
-        <Header />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
-  );
+  )
 }
