@@ -12,28 +12,38 @@ export default function Page() {
     'https://placehold.jp/800x400.png',
   ) // 画像URLは、一旦このURL固定でお願いします。後ほど画像アップロード処理を実装します。
   const [categories, setCategories] = useState<Category[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
     e.preventDefault()
 
-    // 記事を作成します。
-    const res = await fetch('/api/admin/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title, content, thumbnailUrl, categories }),
-    })
+    setIsSubmitting(true)
 
-    // レスポンスから作成した記事のIDを取得します。
-    const { id } = await res.json()
+    try {
+      // 記事を作成します。
+      const res = await fetch('/api/admin/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content, thumbnailUrl, categories }),
+      })
 
-    // 作成した記事の詳細ページに遷移します。
-    router.push(`/admin/posts/${id}`)
+      // レスポンスから作成した記事のIDを取得します。
+      const { id } = await res.json()
 
-    alert('記事を作成しました。')
+      // 作成した記事の詳細ページに遷移します。
+      router.push(`/admin/posts/${id}`)
+
+      alert('記事を作成しました。')
+    } catch (error) {
+      console.error('記事作成エラー:', error)
+      alert('記事の作成に失敗しました。もう一度お試しください。')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -53,6 +63,7 @@ export default function Page() {
         categories={categories}
         setCategories={setCategories}
         onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
       />
     </div>
   )

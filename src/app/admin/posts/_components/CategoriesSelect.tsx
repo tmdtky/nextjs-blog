@@ -11,11 +11,13 @@ import { useEffect } from 'react'
 interface Props {
 	selectedCategories: Category[]
 	setSelectedCategories: (categories: Category[]) => void
+	disabled?: boolean
 }
 
 export const CategoriesSelect: React.FC<Props> = ({
 	selectedCategories,
 	setSelectedCategories,
+	disabled = false,
 }) => {
 	const [categories, setCategories] = React.useState<Category[]>([])
 
@@ -50,6 +52,7 @@ export const CategoriesSelect: React.FC<Props> = ({
 				value={selectedCategories}
 				onChange={(e) => handleChange((e.target.value as unknown) as number[])}
 				input={<OutlinedInput />}
+				disabled={disabled}
 				renderValue={(selected: Category[]) => (
 					<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
 						{selected.map((value: Category) => (

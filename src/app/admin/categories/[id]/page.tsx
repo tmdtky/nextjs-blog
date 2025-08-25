@@ -6,6 +6,7 @@ import { CategoryForm } from '../_components/CategoryForm'
 
 export default function Page() {
   const [name, setName] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { id } = useParams()
   const router = useRouter()
 
@@ -13,31 +14,49 @@ export default function Page() {
     // フォームのデフォルトの動作をキャンセルします。
     e.preventDefault()
 
-    // カテゴリーを作成します。
-    await fetch(`/api/admin/categories/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
-    })
+    setIsSubmitting(true)
 
-    alert('カテゴリーを更新しました。')
+    try {
+      // カテゴリーを更新します。
+      await fetch(`/api/admin/categories/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      })
+
+      alert('カテゴリーを更新しました。')
+    } catch (error) {
+      console.error('カテゴリー更新エラー:', error)
+      alert('カテゴリーの更新に失敗しました。もう一度お試しください。')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleDeletePost = async () => {
     if (!confirm('カテゴリーを削除しますか？')) return
 
-    const res = await fetch(`/api/admin/categories/${id}`, {
-      method: 'DELETE',
-    })
+    setIsSubmitting(true)
 
-    if (res.ok) {
-      alert('カテゴリーを削除しました。')
-      router.push('/admin/categories')
-      router.refresh() // ページをリフレッシュして最新データを取得
-    } else {
-      alert('削除に失敗しました。')
+    try {
+      const res = await fetch(`/api/admin/categories/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (res.ok) {
+        alert('カテゴリーを削除しました。')
+        router.push('/admin/categories')
+        router.refresh() // ページをリフレッシュして最新データを取得
+      } else {
+        alert('削除に失敗しました。')
+      }
+    } catch (error) {
+      console.error('カテゴリー削除エラー:', error)
+      alert('カテゴリーの削除に失敗しました。もう一度お試しください。')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -63,6 +82,7 @@ export default function Page() {
         setName={setName}
         onSubmit={handleSubmit}
         onDelete={handleDeletePost}
+        isSubmitting={isSubmitting}
       />
     </div>
   )

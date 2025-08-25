@@ -7,28 +7,38 @@ import { CategoryForm } from '../_components/CategoryForm'
 
 export default function Page() {
   const [name, setName] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
     e.preventDefault()
 
-    // カテゴリーを作成します。
-    const res = await fetch('/api/admin/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
-    })
+    setIsSubmitting(true)
 
-    // レスポンスから作成したカテゴリーのIDを取得します。
-    const { id } = await res.json()
+    try {
+      // カテゴリーを作成します。
+      const res = await fetch('/api/admin/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      })
 
-    // 作成したカテゴリーの詳細ページに遷移します。
-    router.push(`/admin/categories/${id}`)
+      // レスポンスから作成したカテゴリーのIDを取得します。
+      const { id } = await res.json()
 
-    alert('カテゴリーを作成しました。')
+      // 作成したカテゴリーの詳細ページに遷移します。
+      router.push(`/admin/categories/${id}`)
+
+      alert('カテゴリーを作成しました。')
+    } catch (error) {
+      console.error('カテゴリー作成エラー:', error)
+      alert('カテゴリーの作成に失敗しました。もう一度お試しください。')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -42,6 +52,7 @@ export default function Page() {
         name={name}
         setName={setName}
         onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
       />
     </div>
   )

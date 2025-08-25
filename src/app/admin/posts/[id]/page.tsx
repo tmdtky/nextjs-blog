@@ -11,6 +11,7 @@ export default function Page() {
 	const [content, setContent] = useState('')
 	const [thumbnailUrl, setThumbnailUrl] = useState('')
 	const [categories, setCategories] = useState<Category[]>([])
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const { id } = useParams()
 	const router = useRouter()
 
@@ -18,28 +19,46 @@ export default function Page() {
 		// フォームのデフォルトの動作をキャンセル
 		e.preventDefault()
 
-		// 記事を作成
-		await fetch(`/api/admin/posts/${id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ title, content, thumbnailUrl, categories}),
-		})
+		setIsSubmitting(true)
 
-		alert('記事を更新しました。')
+		try {
+			// 記事を更新
+			await fetch(`/api/admin/posts/${id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ title, content, thumbnailUrl, categories}),
+			})
+
+			alert('記事を更新しました。')
+		} catch (error) {
+			console.error('記事更新エラー:', error)
+			alert('記事の更新に失敗しました。もう一度お試しください。')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	const handleDeletePost = async () => {
 		if (!confirm('記事を削除しますか？')) return
 		
-		await fetch(`/api/admin/posts/${id}`, {
-			method: 'DELETE',
-		})
+		setIsSubmitting(true)
 
-		alert('記事を削除しました。')
+		try {
+			await fetch(`/api/admin/posts/${id}`, {
+				method: 'DELETE',
+			})
 
-		router.push('/admin/posts')
+			alert('記事を削除しました。')
+
+			router.push('/admin/posts')
+		} catch (error) {
+			console.error('記事削除エラー:', error)
+			alert('記事の削除に失敗しました。もう一度お試しください。')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	useEffect(() => {
@@ -73,6 +92,7 @@ export default function Page() {
         setCategories={setCategories}
         onSubmit={handleSubmit}
         onDelete={handleDeletePost}
+        isSubmitting={isSubmitting}
       />
     </div>
   )
